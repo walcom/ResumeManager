@@ -1,0 +1,122 @@
+﻿@model ResumeManager.Models.Applicant
+
+@{
+    ViewData["Title"] = "Details";
+}
+<div class="col-11 mx-auto pt-0 p-0">
+    <div class="card">
+        <div class="card-header bg-success text-uppercase text-white" style="height:45px;">
+            Applicant Details
+        </div>
+
+
+        <form asp-action="Edit" id="applicantForm" enctype="multipart/form-data">
+
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="PhotoUrl" />
+
+            <div class="container-fluid btn-group">
+                <div class="col-12">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <div class="form-group">
+                                <label asp-for="Name" class="control-label font-weight-bold"></label>
+                                <br />
+                                @Html.DisplayFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="Gender" class="control-label font-weight-bold"></label>
+                                <br />
+                                @Html.DisplayFor(model => model.Gender, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="Age" class="control-label font-weight-bold"></label>
+                                <br />
+                                @Html.DisplayFor(model => model.Age, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="Qualification" class="control-label font-weight-bold"></label>
+                                <br />
+                                @Html.DisplayFor(model => model.Qualification, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="TotalExperience" class="control-label font-weight-bold"></label>
+                                <br />
+                                @Html.DisplayFor(model => model.TotalExperience, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 btn-group">
+                            <div class="form-group col-4 p-0">
+                                <label asp-for="ProfilePhoto" class="control-label font-weight-bold"></label>
+                            </div>
+
+                            <div class="col-8">
+                                <div class="form-group justify-content-center align-left">
+                                    <img id="PreviewPhoto" src="~/images/@Model.PhotoUrl" alt="Logo Image" width="125" height="125"
+                                         style="border: 1px; margin-top: 20px;" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="container col-12">
+
+                            <div class="col-md-12 p-0 m-0 bg-light">
+                                <table class="table table-sm CodesTable" id="ExpTable">
+                                    <thead>
+                                        <tr>
+                                            <th>Company Name</th>
+                                            <th>Designation</th>
+                                            <th>Years Worked</th>
+                                            <th style="width:75px;">
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @for (int i = 0; i < Model.Experiences.Count; i++)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    @Html.DisplayFor(x => x.Experiences[i].CompanyName, new { htmlAttributes = new { @class = "form-control" } })
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(x => x.Experiences[i].Designation, new { htmlAttributes = new { @class = "form-control" } })
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(x => x.Experiences[i].YearsWorked, new { htmlAttributes = new { @class = "form-control YearsWorked" } })
+                                                </td>
+                                                <td style="width:60px;">
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+
+                        <input type="hidden" id="hdnLastIndex" value="0" />
+
+
+                        <div class="col-12 btn-group">
+                            <div class="col-6 form-group text-right p-2">
+                                <a asp-action="Index" class="btn btn-secondary">&nbsp;Back &nbsp;</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+
+    </div>
+</div>
