@@ -43,7 +43,7 @@ namespace ResumeManager.Models
 
         public string PhotoUrl { get; set; }
 
-        [Required(ErrorMessage="Please choose the Profile Photo")]
+        //[Required(ErrorMessage="Please choose the Profile Photo")]
         [Display(Name = "Profile Photo")]
         [NotMapped]
         public IFormFile ProfilePhoto { get; set; }

@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using ResumeManager.Data;
 using ResumeManager.Models;
 using System;
@@ -33,6 +35,8 @@ namespace ResumeManager.Controllers
         {
             Applicant applicant = new Applicant();
             applicant.Experiences.Add(new Experience() { ExperienceId = 1 });
+
+            ViewBag.Gender = GetGenderList();
             //applicant.Experiences.Add(new Experience() { ExperienceId = 2 });
             //applicant.Experiences.Add(new Experience() { ExperienceId = 3 });
 
@@ -74,6 +78,85 @@ namespace ResumeManager.Controllers
             }
 
             return uniqueFileName;
+        }
+
+        public IActionResult Delete(int id)
+        {
+            Applicant applicant = context.Applicants
+                .Include(e => e.Experiences)
+                .Where(a => a.Id == id)
+                .FirstOrDefault();
+
+            return View(applicant);
+        }
+
+        [HttpPost]
+        public IActionResult Delete(Applicant applicant)
+        {
+            context.Attach(applicant);
+            context.Entry(applicant).State = EntityState.Deleted;
+            context.SaveChanges();
+
+            return RedirectToAction("index");
+        }
+
+        public IActionResult Details(int id)
+        {
+            Applicant applicant = context.Applicants
+                .Include(e => e.Experiences)
+                .Where(a => a.Id == id)
+                .FirstOrDefault();
+
+            return View(applicant);
+        }
+
+        public IActionResult Edit(int id)
+        {
+            Applicant applicant = context.Applicants
+                .Include(e => e.Experiences)
+                .Where(a => a.Id == id)
+                .FirstOrDefault();
+
+            ViewBag.Gender = GetGenderList();
+
+            return View(applicant);
+        }
+
+
+        [HttpPost]
+        public IActionResult Edit(Applicant applicant)
+        {
+            List<Experience> details = context.Experiences.Where(d => d.ApplicantId == applicant.Id).ToList();
+            context.Experiences.RemoveRange(details);
+            context.SaveChanges();
+
+            applicant.Experiences.RemoveAll(n => n.YearsWorked == 0);
+
+            if (applicant.ProfilePhoto != null)
+            {
+                string uniqueFileName = GetUploadedFileName(applicant);
+                applicant.PhotoUrl = uniqueFileName;
+            }
+
+            context.Attach(applicant);
+            context.Entry(applicant).State = EntityState.Modified;
+            context.Experiences.AddRange(applicant.Experiences);
+
+            context.SaveChanges();
+
+            return RedirectToAction("index");
+        }
+
+        private List<SelectListItem> GetGenderList()
+        {
+            List<SelectListItem> lstGender = new List<SelectListItem>();
+
+            lstGender.Insert(0, new SelectListItem() { Value = "", Text = "Select Gender" });
+
+            lstGender.Add(new SelectListItem() { Value = "Male", Text = "Male" });
+            lstGender.Add(new SelectListItem() { Value = "Female", Text = "Female" });
+
+            return lstGender;
         }
 
 

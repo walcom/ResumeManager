@@ -24,8 +24,13 @@ namespace ResumeManager.Models
         public string CompanyName { get; set; }
         public string Designation { get; set; }
 
+        [Range(1, 35, ErrorMessage = "Years must be between 1 and 35")]
         [Required]
         public int YearsWorked { get; set; }
+
+
+        [NotMapped]
+        public bool IsDeleted { get; set; } = false;
 
 
         public virtual Applicant Applicant { get; private set; }
