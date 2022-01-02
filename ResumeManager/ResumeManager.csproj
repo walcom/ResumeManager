@@ -6,6 +6,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\images\1f5a650c-7645-421e-ad67-8e175aa9ac21_SharedScreenshot.jpg" />
+    <Content Remove="wwwroot\images\6e50ff55-344e-4fd3-a17a-3701d408f0b1_vlcsnap-2021-08-07-06h25m34s717.png" />
+    <Content Remove="wwwroot\images\adcbf706-843e-42a8-bc24-bb73f717d2c9_SharedScreenshot.jpg" />
+    <Content Remove="wwwroot\images\f4460a64-50ab-45c1-aa30-e88518de11e2_1517683972370.png" />
+    <Content Remove="wwwroot\images\faeaf673-cb55-4d0c-aef1-58aad100d3d6_SharedScreenshot.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="5.0.13" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.13" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.13">
