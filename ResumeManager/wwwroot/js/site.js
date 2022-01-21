@@ -3,6 +3,16 @@
 
 // Write your JavaScript code.
 
+$(function () {
+    $('#loaderbody').addClass('hide');
+
+    $(document).bind('ajaxStart', function () {
+        $('#loaderbody').removeClass('hide');
+    }).bind('ajaxStop', function () {
+        $('#loaderbody').addClass('hide');
+    });
+});
+
 $(".custom-file-input").on("change", function () {
     var filename = $(this).val().split("\\").pop();
     $(this).siblings(".custom-file-label").addClass("selected").html(filename);
@@ -90,3 +100,83 @@ function rebindValidators() {
     $.validator.unobtrusive.parse($form);
     $form.validate($form.data("unobtrusivevalidation").options);
 }
+
+
+showInPopup = (url, title) => {
+    $.ajax({
+        type: "GET",
+        url: url,
+        success: function (res) {
+            $("#form-modal .modal-body").html(res);
+            $("#form-modal .modal-title").html(title);
+            $("#form-modal").modal('show');
+        }
+    })
+}
+
+
+JqueryAjaxPost = form => {
+    try {
+        //console.log(form);
+
+        $.ajax({
+            type: 'POST',
+            url: form.action,
+            data: new FormData(form),
+            contentType: false,
+            processData: false,
+            success: function (res) {                
+                if (res.isValid) {
+                    $('#view-all').html(res.html);
+                    $("#form-modal .modal-body").html('');
+                    $("#form-modal .modal-title").html('');
+
+                    $("#form-modal").modal('hide');
+
+                    $.notify('Submitted Successfully', "success", { globalPosition: 'top center'});
+                }
+                else
+                    $("#form-modal .modal-body").html(res.html);
+            },
+            error: function (err) {
+                console.log(err);
+            }
+        })
+
+        // to prevent default form submit
+        return false;
+    }
+    catch (ex) {
+        console.log(ex);
+    }
+};
+
+
+jQueryAjaxDelete = form => {
+    if (confirm('Are you sure to delete this record? ')) {
+        try {
+            //console.log(form);
+
+            $.ajax({
+                type: 'POST',
+                url: form.action,
+                data: new FormData(form),
+                contentType: false,
+                processData: false,
+                success: function (res) {
+                    $('#view-all').html(res.html);
+                    //$.notify('Deleted Successfully', { globalPosition: 'top center', class:'success' });
+                },
+                error: function (err) {
+                    console.log(err);
+                }
+            })
+        }
+        catch (ex) {
+            console.log(ex);
+        }
+    }
+
+    // to prevent default form submit
+    return false;
+};

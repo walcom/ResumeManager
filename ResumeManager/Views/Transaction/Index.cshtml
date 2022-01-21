@@ -1,0 +1,15 @@
+﻿@model IEnumerable<ResumeManager.Models.TransactionModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1 class="text-center"><i class="fas fa-comment-dollar text-success"></i>Transaction History </h1>
+
+<p>
+
+</p>
+
+<div id="view-all">
+    @await Html.PartialAsync("_ViewAll", Model)
+</div>

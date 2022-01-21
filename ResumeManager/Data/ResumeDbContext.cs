@@ -17,6 +17,8 @@ namespace ResumeManager.Data
         public virtual DbSet<Applicant> Applicants { get; set; }
         public virtual DbSet<Experience> Experiences { get; set; }
 
+        public virtual DbSet<TransactionModel> Transactions { get; set; }
+
 
     }
 }
