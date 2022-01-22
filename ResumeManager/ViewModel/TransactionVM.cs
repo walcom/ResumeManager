@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ResumeManager.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -6,9 +7,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ResumeManager.Models
+namespace ResumeManager.ViewModel
 {
-    public class TransactionModel
+    public class TransactionVM
     {
         [Key]
         public int TransactionID { get; set; }
@@ -28,11 +29,14 @@ namespace ResumeManager.Models
         //[DisplayName("Bank Name")]
         //[Column(TypeName = "nvarchar(100)")]
         //public string BankName { get; set; }
-        //[Required(ErrorMessage = "This field is required!")]
-        //[DisplayName("Bank Name")]
-        //[Column(TypeName = "int")]
-        //public int BankID { get; set; }
-        public Bank Bank { get; set; }
+
+        [Required(ErrorMessage = "This field is required!")]
+        [DisplayName("Bank Name")]
+        [Column(TypeName = "int")]
+        public int BankID { get; set; }
+
+        public List<Bank> Banks { get; set; }
+
 
         [MaxLength(11)]
         [Required(ErrorMessage = "This field is required!")]
@@ -45,6 +49,7 @@ namespace ResumeManager.Models
 
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime Date { get; set; }
+
 
     }
 }

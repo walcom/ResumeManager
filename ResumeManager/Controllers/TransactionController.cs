@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ResumeManager.Data;
 using ResumeManager.Models;
+using ResumeManager.ViewModel;
 using static ResumeManager.Helper;
 
 namespace ResumeManager.Controllers
@@ -23,7 +24,7 @@ namespace ResumeManager.Controllers
         // GET: Transaction
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Transactions.ToListAsync());
+            return View(await _context.Transactions.Include(b => b.Bank).ToListAsync());
         }
 
         // GET: Transaction/Details/5
@@ -71,17 +72,43 @@ namespace ResumeManager.Controllers
         public async Task<IActionResult> AddOrEdit(int id = 0)
         {
             if (id == 0)
-                return View(new TransactionModel());
+            {
+                var model = new TransactionVM
+                {
+                    Banks = FillBanksList()
+                };
+
+                return View(model);
+                //return View(new TransactionModel());
+            }
             else
             {
-                var transactionModel = await _context.Transactions.FindAsync(id);
+                var transactionModel = await _context.Transactions.Include(b => b.Bank).SingleOrDefaultAsync(t => t.TransactionID == id);
                 if (transactionModel == null)
                 {
                     return NotFound();
                 }
 
-                return View(transactionModel);
+                var vmodel = new TransactionVM
+                {
+                    TransactionID = transactionModel.TransactionID,
+                    AccountNumber = transactionModel.AccountNumber,
+                    BeneficiaryName = transactionModel.BeneficiaryName,
+                    SWIFTCode = transactionModel.SWIFTCode,
+                    Amount = transactionModel.Amount,
+                    BankID = transactionModel.Bank.ID,
+                    Banks = FillBanksList()
+                };
+
+                return View(vmodel);
             }
+        }
+
+        private List<Bank> FillBanksList()
+        {
+            var banks = _context.Banks.ToList();
+            banks.Insert(0, new Bank { ID = -1, BankName = "--Please select--" });
+            return banks;
         }
 
         // POST: Transaction/AddOrEdit/5
@@ -89,7 +116,8 @@ namespace ResumeManager.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddOrEdit(int id, [Bind("TransactionID,AccountNumber,BeneficiaryName,BankName,SWIFTCode,Amount,Date")] TransactionModel transactionModel)
+        public async Task<IActionResult> AddOrEdit(int id, TransactionVM model)
+        //, [Bind("TransactionID,AccountNumber,BeneficiaryName,BankName,SWIFTCode,Amount,Date")] TransactionModel transactionModel)
         {
             //if (id != transactionModel.TransactionID)
             //{
@@ -100,7 +128,16 @@ namespace ResumeManager.Controllers
             {
                 if (id == 0)
                 {
-                    transactionModel.Date = DateTime.Now;
+                    var transactionModel = new TransactionModel
+                    {
+                        AccountNumber = model.AccountNumber,
+                        BeneficiaryName = model.BeneficiaryName,
+                        SWIFTCode = model.SWIFTCode,
+                        Amount = model.Amount,
+                        Date = DateTime.Now,
+                        Bank = _context.Banks.Find(model.BankID)
+                    };
+
                     _context.Add(transactionModel);
                     await _context.SaveChangesAsync();
                 }
@@ -108,12 +145,23 @@ namespace ResumeManager.Controllers
                 {
                     try
                     {
+                        var transactionModel = new TransactionModel
+                        {
+                            TransactionID = model.TransactionID,
+                            AccountNumber = model.AccountNumber,
+                            BeneficiaryName = model.BeneficiaryName,
+                            SWIFTCode = model.SWIFTCode,
+                            Amount = model.Amount,
+                            Date = DateTime.Now,
+                            Bank = _context.Banks.Find(model.BankID)
+                        };
+
                         _context.Update(transactionModel);
                         await _context.SaveChangesAsync();
                     }
                     catch (DbUpdateConcurrencyException)
                     {
-                        if (!TransactionModelExists(transactionModel.TransactionID))
+                        if (!TransactionModelExists(model.TransactionID))
                         {
                             return NotFound();
                         }
@@ -129,7 +177,7 @@ namespace ResumeManager.Controllers
                     new
                     {
                         isValid = true,
-                        html = Helper.RenderRazorViewToString(this, "_ViewAll", _context.Transactions.ToList())
+                        html = Helper.RenderRazorViewToString(this, "_ViewAll", _context.Transactions.Include(b => b.Bank).ToList())
                     }
                 );
                 //return RedirectToAction(nameof(Index));
@@ -139,7 +187,7 @@ namespace ResumeManager.Controllers
                 new
                 {
                     isValid = false,
-                    html = Helper.RenderRazorViewToString(this, "AddOrEdit", transactionModel)
+                    html = Helper.RenderRazorViewToString(this, "AddOrEdit", model)
                 }
              );
             //return View(transactionModel);

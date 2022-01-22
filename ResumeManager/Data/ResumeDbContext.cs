@@ -18,6 +18,7 @@ namespace ResumeManager.Data
         public virtual DbSet<Experience> Experiences { get; set; }
 
         public virtual DbSet<TransactionModel> Transactions { get; set; }
+        public virtual DbSet<Bank> Banks { get; set; }
 
 
     }

@@ -15,9 +15,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.Date)
             </th>
-            @*<th>
-                    @Html.DisplayNameFor(model => model.SWIFTCode)
-                </th>*@
+            <th>
+                    @Html.DisplayNameFor(model => model.Bank.BankName)
+                </th>
             <th>
                 @Html.DisplayNameFor(model => model.Amount)
             </th>
@@ -41,9 +41,9 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Date)
                 </td>
-                @*<td>
-                        @Html.DisplayFor(modelItem => item.SWIFTCode)
-                    </td>*@
+                <td>
+                        @Html.DisplayFor(modelItem => item.Bank.BankName)
+                    </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Amount)
                 </td>

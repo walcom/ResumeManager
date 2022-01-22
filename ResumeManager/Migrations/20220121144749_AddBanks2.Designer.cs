@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ResumeManager.Data;
 
 namespace ResumeManager.Migrations
 {
     [DbContext(typeof(ResumeDbContext))]
-    partial class ResumeDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220121144749_AddBanks2")]
+    partial class AddBanks2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -57,17 +59,17 @@ namespace ResumeManager.Migrations
 
             modelBuilder.Entity("ResumeManager.Models.Bank", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<int>("BankID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("BankName")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(12)
+                        .HasColumnType("nvarchar(12)");
 
-                    b.HasKey("ID");
+                    b.HasKey("BankID");
 
                     b.ToTable("Banks");
                 });
@@ -113,7 +115,7 @@ namespace ResumeManager.Migrations
                     b.Property<int>("Amount")
                         .HasColumnType("int");
 
-                    b.Property<int?>("BankID")
+                    b.Property<int>("BankID")
                         .HasColumnType("int");
 
                     b.Property<string>("BeneficiaryName")
@@ -130,8 +132,6 @@ namespace ResumeManager.Migrations
 
                     b.HasKey("TransactionID");
 
-                    b.HasIndex("BankID");
-
                     b.ToTable("Transactions");
                 });
 
@@ -144,15 +144,6 @@ namespace ResumeManager.Migrations
                         .IsRequired();
 
                     b.Navigation("Applicant");
-                });
-
-            modelBuilder.Entity("ResumeManager.Models.TransactionModel", b =>
-                {
-                    b.HasOne("ResumeManager.Models.Bank", "Bank")
-                        .WithMany()
-                        .HasForeignKey("BankID");
-
-                    b.Navigation("Bank");
                 });
 
             modelBuilder.Entity("ResumeManager.Models.Applicant", b =>
