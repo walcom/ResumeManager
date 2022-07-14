@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ResumeManager.ViewModel;
 
 namespace ResumeManager.Data
 {
@@ -19,6 +20,14 @@ namespace ResumeManager.Data
 
         public virtual DbSet<TransactionModel> Transactions { get; set; }
         public virtual DbSet<Bank> Banks { get; set; }
+
+
+        public virtual DbSet<Unit> Units { get; set; }
+        public virtual DbSet<Product> Products { get; set; }
+        public virtual DbSet<OCustomer> OCustomers { get; set; }
+        public virtual DbSet<SaleInvoice> SaleInvoices { get; set; }
+        public virtual DbSet<SalesInvoiceDetails> SaleInvoiceDetails { get; set; }
+        //public DbSet<ResumeManager.ViewModel.SaleInvoiceVM> SaleInvoiceVM { get; set; }
 
 
     }
