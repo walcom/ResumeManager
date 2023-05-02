@@ -6,6 +6,8 @@
 $(function () {
     $('#loaderbody').addClass('hide');
 
+    $.notify.defaults({ globalPosition: 'top left' });
+
     $(document).bind('ajaxStart', function () {
         $('#loaderbody').removeClass('hide');
     }).bind('ajaxStop', function () {
@@ -133,7 +135,8 @@ JqueryAjaxPost = form => {
 
                     $("#form-modal").modal('hide');
 
-                    $.notify('Submitted Successfully', "success", { globalPosition: 'top center'});
+                    $.notify('Submitted Successfully', "success");
+                    // , { globalPosition: 'top left'}
                 }
                 else
                     $("#form-modal .modal-body").html(res.html);

@@ -3,12 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ResumeManager.Data;
 using ResumeManager.Models;
 using ResumeManager.ViewModel;
-using static ResumeManager.Helper;
 
 namespace ResumeManager.Controllers
 {
@@ -201,8 +199,7 @@ namespace ResumeManager.Controllers
                 return NotFound();
             }
 
-            var transactionModel = await _context.Transactions
-                .FirstOrDefaultAsync(m => m.TransactionID == id);
+            var transactionModel = await _context.Transactions.FirstOrDefaultAsync(m => m.TransactionID == id);
             if (transactionModel == null)
             {
                 return NotFound();
@@ -227,5 +224,7 @@ namespace ResumeManager.Controllers
         {
             return _context.Transactions.Any(e => e.TransactionID == id);
         }
+
+
     }
 }

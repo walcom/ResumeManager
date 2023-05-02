@@ -7,7 +7,7 @@
 }
 
 
-<div class="row">
+<div class="row text-right-align">
     <div class="col-md-12">
         <form asp-action="AddOrEdit" asp-route-id="@Model.TransactionID" onsubmit="return JqueryAjaxPost(this);" autocomplete="off">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -15,7 +15,7 @@
             <input type="hidden" asp-for="Date" />
 
             <div class="form-group">
-                <label asp-for="AccountNumber" class="control-label"></label>
+                <label asp-for="AccountNumber" class=""></label>
                 <div class="input-group">
                     <div class="input-group-prepend">
                         <div class="input-group-text">#</div>
